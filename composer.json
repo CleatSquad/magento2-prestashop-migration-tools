@@ -3,6 +3,8 @@
     "description": "Migration Tool from prestashop to Magento 2",
     "keywords": ["prestashop", "magento2", "migration"],
     "license": "MIT",
+    "type": "magento2-basic",
+    "type": "magento2-module",
     "authors": [
         {
             "name": "Mohamed El Mrabet",
@@ -13,12 +15,20 @@
     "require": {
         "php": ">=5.4.0",
         "symfony/console": "~2.3, !=2.7.0",
-        "magento/framework": "~101.0.0",
         "monolog/monolog": "^1.17",
         "symfony/options-resolver": "^3.2"
+    },
+    "require-dev": {
+        "magento/framework": "~101.0.0"
     },
     "autoload": {
         "psr-4": {"Mimlab\\PrestashopMigrationTool\\": "src/Migration"},
         "files" : ["src/Migration/registration.php"]
-    }
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://repo.magento.com/"
+        }
+    ]
 }
