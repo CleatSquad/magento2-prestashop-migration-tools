@@ -1,0 +1,1 @@
+SELECT `id_customer`,`email`,`firstname`,`lastname`,`passwd`,`id_gender`,`birthday`, newsletter FROM `ps_customer` where deleted = 0

@@ -1,0 +1,3 @@
+"address_id","customer_id","fisrtname","lastname","company","telephone","street1","street2","postcode","country_id","state","city"
+"1","1","John","DOE","My Company","0102030405","16, Main street","2nd floor","75002","FR",NULL,"Paris "
+"4","1","John","DOE","My Company","0102030405","16, Main street","2nd floor","33133","US","Florida","Miami"

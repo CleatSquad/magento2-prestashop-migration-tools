@@ -1,0 +1,19 @@
+"parent_id", "store","category_id","name","level","position","description","url_key","is_active","meta_title","meta_keywords","meta_description","is_root_category"
+0,,"1","Root","0","0",,"root","1",,,,"0"
+0,"fr","1","Racine","0","0",,"racine","1",,,,"0"
+1,"fr","2","Accueil","1","0",,"accueil","1",,,,"1"
+2,"fr","3","Women","2","0","<p><strong>You will find here all woman fashion collections.</strong></p>
+<p>This category includes all the basics of your wardrobe and much more:</p>
+<p>shoes, accessories, printed t-shirts, feminine dresses, women's jeans!</p>","women","1",,,,"0"
+3,"fr","4","Tops","3","0","<p>Choose from t-shirts, tops, blouses, short sleeves, long sleeves, tank tops, 3/4 sleeves and more.</p>
+<p>Find the cut that suits you the best!</p>","tops","1",,,,"0"
+4,"fr","5","T-shirts","4","0","<p>The must have of your wardrobe, take a look at our different colors,</p>
+<p>shapes and style of our collection!</p>","tshirts","1",,,,"0"
+4,"fr","6","Tops","4","0","Choose the top that best suits you from the wide variety of tops we have. ","top","0",,,,"0"
+4,"fr","7","Blouses","4","0","Match your favorites blouses with the right accessories for the perfect look.","blouses","1",,,,"0"
+3,"fr","8","Dresses","3","0","<p>Find your favorites dresses from our wide choice of evening, casual or summer dresses!</p>
+<p>We offer dresses for every day, every style and every occasion.</p>","dresses","1",,,,"0"
+8,"fr","9","Casual Dresses","4","0","<p>You are looking for a dress for every day? Take a look at</p>
+<p>our selection of dresses to find one that suits you.</p>","casual-dresses","1",,,,"0"
+8,"fr","10","Evening Dresses","4","0","Browse our different dresses to choose the perfect dress for an unforgettable evening!","evening-dresses","1",,,,"0"
+8,"fr","11","Summer Dresses","4","0","Short dress, long dress, silk dress, printed dress, you will find the perfect dress for summer.","summer-dresses","1",,,,"0"

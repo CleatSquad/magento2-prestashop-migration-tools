@@ -1,0 +1,1 @@
+select id_lang,name,language_code,active,locale from ps_lang
