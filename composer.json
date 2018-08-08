@@ -1,5 +1,5 @@
 {
-    "name": "mimou78/prestashop-migration-tools",
+    "name": "mimou78/magento2-prestashop-migration-tools",
     "description": "Migration Tool from prestashop to Magento 2",
     "keywords": ["prestashop", "magento2", "migration"],
     "license": "MIT",
