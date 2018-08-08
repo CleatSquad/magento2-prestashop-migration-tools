@@ -1,8 +1,17 @@
 {
     "name": "mimou78/prestashop-migration-tools",
     "description": "Migration Tool from prestashop to Magento 2",
+    "keywords": ["prestashop", "magento2", "migration"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mohamed El Mrabet",
+            "email": "mimou78@gmail.com"
+        }
+    ],
     "version": "1.0.0",
     "require": {
+        "php": ">=5.4.0",
         "symfony/console": "~2.3, !=2.7.0",
         "magento/framework": "~101.0.0",
         "monolog/monolog": "^1.17",
