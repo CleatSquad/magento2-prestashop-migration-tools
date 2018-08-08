@@ -1,7 +1,6 @@
-# Laraset #
-![Licence]https://img.shields.io/github/license/mimou78/magento2-prestashop-migration-tools.svg) ![GitHub release](https://img.shields.io/github/release/mimou78/magento2-prestashop-migration-tools.svg) [![Total Downloads](https://poser.pugx.org/mimou78/magento2-prestashop-migration-tools/downloads)](https://packagist.org/packages/mimou78/magento2-prestashop-migration-tools) [![Latest Stable Version](https://poser.pugx.org/mimou78/magento2-prestashop-migration-tools/version)](https://packagist.org/packages/mimou78/magento2-prestashop-migration-tools)
-
 # Module for migrate Catalog - Customers - Orders from Prestashop 1.7 to Magento 2
+
+![Licence](https://img.shields.io/github/license/mimou78/magento2-prestashop-migration-tools.svg) ![GitHub release](https://img.shields.io/github/release/mimou78/magento2-prestashop-migration-tools.svg) [![Total Downloads](https://poser.pugx.org/mimou78/magento2-prestashop-migration-tools/downloads)](https://packagist.org/packages/mimou78/magento2-prestashop-migration-tools) [![Latest Stable Version](https://poser.pugx.org/mimou78/magento2-prestashop-migration-tools/version)](https://packagist.org/packages/mimou78/magento2-prestashop-migration-tools)
 
 ## Installation for Magento 2
 
