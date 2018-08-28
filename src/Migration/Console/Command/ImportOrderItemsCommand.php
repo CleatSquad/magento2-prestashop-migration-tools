@@ -59,6 +59,9 @@ class ImportOrderItemsCommand extends ImportCommand
     {
         /** @var OrderItem $order */
         $order = $this->orderItemFactory->create();
+        if ($dirInputPath = $input->getOption(parent::INPUT_KEY_FLOW_DIR)) {
+            $order->setFlowDir($dirInputPath);
+        }
         $order->execute(self::TYPE_IMPORT, $output);
     }
 }

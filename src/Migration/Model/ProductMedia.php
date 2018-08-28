@@ -81,7 +81,7 @@ class ProductMedia extends AbstractImport
     {
         $this->createMediaDirTmpDir();
         $tmpDir = $this->getMediaDirTmpDir();
-        $data = $this->getBunches();
+        $data = $this->getLines();
         if (count($data)) {
             foreach ($data as $row) {
                 $product = $this->getProductById($row['product_id']);
@@ -90,10 +90,10 @@ class ProductMedia extends AbstractImport
                     $this->filesystemDriver->copy($row['image'], $result);
                     if ($row['cover'] == 1) {
                         $mediaAttribute = ['image' ,'thumbnail', 'small_image'];
-                        $exclude = true;
+                        $exclude = false;
                     } else {
                         $mediaAttribute = '';
-                        $exclude = false;
+                        $exclude = true;
                     }
                     $product->addImageToMediaGallery($result, $mediaAttribute, true, $exclude);
                     $product->save();

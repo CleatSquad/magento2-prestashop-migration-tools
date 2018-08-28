@@ -60,6 +60,9 @@ class ImportCustomerAddressCommand extends ImportCommand
     {
         /** @var CustomerAddress $customerAddress */
         $customerAddress = $this->customerAddressFactory->create();
+        if ($dirInputPath = $input->getOption(parent::INPUT_KEY_FLOW_DIR)) {
+            $customerAddress->setFlowDir($dirInputPath);
+        }
         $customerAddress->execute(self::TYPE_IMPORT, $output);
     }
 }

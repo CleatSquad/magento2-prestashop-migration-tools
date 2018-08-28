@@ -59,6 +59,9 @@ class ImportChildProduct extends ImportCommand
     {
         /** @var ProductChild $product */
         $product = $this->productChildFactory->create();
+        if ($dirInputPath = $input->getOption(parent::INPUT_KEY_FLOW_DIR)) {
+            $product->setFlowDir($dirInputPath);
+        }
         $product->execute(self::TYPE_IMPORT, $output);
     }
 }

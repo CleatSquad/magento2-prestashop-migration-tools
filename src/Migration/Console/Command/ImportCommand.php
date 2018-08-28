@@ -13,6 +13,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Exception\InvalidArgumentException;
+use Symfony\Component\Console\Input\InputOption;
 
 /**
  * Class ImportCommand
@@ -30,6 +31,11 @@ class ImportCommand extends Command
      * input arguments
      */
     const INPUT_KEY_TYPE = 'type';
+ 
+    /**
+     * input options
+     */
+    const INPUT_KEY_FLOW_DIR = 'dir';
 
     /**
      * @var ObjectManagerInterface
@@ -87,6 +93,12 @@ class ImportCommand extends Command
                             ImportCustomerCommand::TYPE_IMPORT,
                             ImportOrderCommand::TYPE_IMPORT
                         )
+                    ),
+                    new InputOption(
+                        self::INPUT_KEY_FLOW_DIR,
+                        null,
+                        InputOption::VALUE_OPTIONAL,
+                        'Flow directory'
                     )
                 ]
             );
@@ -179,6 +191,7 @@ class ImportCommand extends Command
     protected function beforeExecute(InputInterface $input, OutputInterface $output) 
     {
         $typeArgument = $input->getArgument(self::INPUT_KEY_TYPE);
+        $dirInputPath = $input->getOption(self::INPUT_KEY_FLOW_DIR);
         switch ($typeArgument) {
             case ImportCategoriesCommand::TYPE_IMPORT:
                 $arrayInput = $this->objectManager->create(
@@ -186,7 +199,8 @@ class ImportCommand extends Command
                     [
                         'parameters' => [
                             'command' => self::COMMAND,
-                            self::INPUT_KEY_TYPE => ImportStoresCommand::TYPE_IMPORT
+                            self::INPUT_KEY_TYPE => ImportStoresCommand::TYPE_IMPORT,
+                            '--' . self::INPUT_KEY_FLOW_DIR => $dirInputPath
                         ]
                     ]
                 );
@@ -198,7 +212,8 @@ class ImportCommand extends Command
                     [
                         'parameters' => [
                             'command' => self::COMMAND,
-                            self::INPUT_KEY_TYPE => ImportCategoriesCommand::TYPE_IMPORT
+                            self::INPUT_KEY_TYPE => ImportCategoriesCommand::TYPE_IMPORT,
+                            '--' . self::INPUT_KEY_FLOW_DIR => $dirInputPath
                         ]
                     ]
                 );
@@ -216,6 +231,7 @@ class ImportCommand extends Command
     protected function afterExecute(InputInterface $input, OutputInterface $output) 
     {
         $typeArgument = $input->getArgument(self::INPUT_KEY_TYPE);
+        $dirInputPath = $input->getOption(self::INPUT_KEY_FLOW_DIR);
         switch ($typeArgument) {
             case ImportProductCommand::TYPE_IMPORT:
                 $arrayInput = $this->objectManager->create(
@@ -223,7 +239,8 @@ class ImportCommand extends Command
                     [
                         'parameters' => [
                             'command' => self::COMMAND,
-                            self::INPUT_KEY_TYPE => ImportProductCategory::TYPE_IMPORT
+                            self::INPUT_KEY_TYPE => ImportProductCategory::TYPE_IMPORT,
+                            '--' . self::INPUT_KEY_FLOW_DIR => $dirInputPath
                         ]
                     ]
                 );
@@ -233,7 +250,8 @@ class ImportCommand extends Command
                     [
                         'parameters' => [
                             'command' => self::COMMAND,
-                            self::INPUT_KEY_TYPE => ImportProductMedia::TYPE_IMPORT
+                            self::INPUT_KEY_TYPE => ImportProductMedia::TYPE_IMPORT,
+                            '--' . self::INPUT_KEY_FLOW_DIR => $dirInputPath
                         ]
                     ]
                 );
@@ -245,7 +263,8 @@ class ImportCommand extends Command
                     [
                         'parameters' => [
                             'command' => self::COMMAND,
-                            self::INPUT_KEY_TYPE => ImportCustomerAddressCommand::TYPE_IMPORT
+                            self::INPUT_KEY_TYPE => ImportCustomerAddressCommand::TYPE_IMPORT,
+                            '--' . self::INPUT_KEY_FLOW_DIR => $dirInputPath
                         ]
                     ]
                 );
@@ -257,7 +276,8 @@ class ImportCommand extends Command
                     [
                         'parameters' => [
                             'command' => self::COMMAND,
-                            self::INPUT_KEY_TYPE => ImportOrderItemsCommand::TYPE_IMPORT
+                            self::INPUT_KEY_TYPE => ImportOrderItemsCommand::TYPE_IMPORT,
+                            '--' . self::INPUT_KEY_FLOW_DIR => $dirInputPath
                         ]
                     ]
                 );

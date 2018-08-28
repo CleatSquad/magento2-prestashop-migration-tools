@@ -17,16 +17,18 @@ use Monolog\Handler\StreamHandler;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Magento\Store\Model\App\Emulation;
 
 /**
  * Abstract class AbstractImport
  *
  * @package Mimlab\PrestashopMigrationTool\Model
  *
- * @method $this setBunches($bunches)
- * @method array getBunches()
- * @method $this unsetBunches()
- * @method bool hasBunches()
+ * @method $this setLines($lines)
+ * @method array getLiness()
+ * @method $this unsetLines()
+ * @method bool hasLines()
+ * @abstract
  */
 abstract class AbstractImport extends DataObject implements ImportInterface
 {
@@ -122,6 +124,16 @@ abstract class AbstractImport extends DataObject implements ImportInterface
     protected $storeManager;
 
     /**
+     * @var Emulation
+     */
+    protected $emulation;
+
+    /**
+     * @var sting
+     */
+    protected $flowDir;
+
+    /**
      * AbstractImport constructor.
      *
      * @param FixtureManager $fixtureManager
@@ -131,6 +143,7 @@ abstract class AbstractImport extends DataObject implements ImportInterface
      * @param ProcessingErrorAggregatorInterface $errorAggregator
      * @param OptionsResolver $optionsResolver
      * @param StoreManagerInterface $storeManager
+     * @param Emulation $emulation
      */
     public function __construct(
         FixtureManager $fixtureManager,
@@ -139,7 +152,8 @@ abstract class AbstractImport extends DataObject implements ImportInterface
         File $filesystemDriver,
         ProcessingErrorAggregatorInterface $errorAggregator,
         OptionsResolver $optionsResolver,
-        StoreManagerInterface $storeManager
+        StoreManagerInterface $storeManager,
+        Emulation $emulation
     ) {
         $this->fixtureManager = $fixtureManager;
         $this->filesystem = $filesystem;
@@ -151,7 +165,8 @@ abstract class AbstractImport extends DataObject implements ImportInterface
         $this->filesErrors = [];
         $this->filesErrorsLinks = [];
         $this->configureOptions();
-        $this->prepareDirectories();
+        $this->emulation = $emulation;
+        $this->setFlowDir(self::DIR_INPUT_PATH);
 
         parent::__construct([]);
     }
@@ -166,8 +181,9 @@ abstract class AbstractImport extends DataObject implements ImportInterface
      */
     public function execute($name, OutputInterface $output)
     {
+        $this->prepareDirectories();
         $files = $this->getAllFiles($this->getFileName($name));
-        $this->fileLock = sprintf(self::LOCK_FILE_PATTERN, $this->importDirectoryPath.$this->getFileName($name));
+        $this->fileLock = sprintf(self::LOCK_FILE_PATTERN, $this->importDirectoryPath . $this->getFileName($name));
         if ($this->filesystemDriver->isExists($this->fileLock)) {
             throw new \Exception(__("There is another import operation in progress"));
         }
@@ -226,20 +242,31 @@ abstract class AbstractImport extends DataObject implements ImportInterface
     }
 
     /**
+     * Prepare row
+     *
+     * @param array $row
+     */
+    protected function prepareData(&$row)
+    {
+    }
+
+    /**
      * Launch the save Data Process
+     *
+     * @abstract
      */
     abstract public function saveData();
 
     /**
      * Add a new item to the current import
      *
-     * @param $bunch
+     * @param $line
      */
-    protected function addBunch($bunch)
+    protected function addLine($line)
     {
-        $bunches = $this->getBunches();
-        $bunches[] = $bunch;
-        $this->setBunches($bunches);
+        $lines = $this->getLines();
+        $lines[] = $line;
+        $this->setLines($lines);
     }
 
     /**
@@ -248,7 +275,7 @@ abstract class AbstractImport extends DataObject implements ImportInterface
     private function prepareDirectories()
     {
         // Init Directories
-        $this->importDirectoryPath = $this->filesystem->getDirectoryRead(DirectoryList::MEDIA)->getAbsolutePath(self::DIR_INPUT_PATH) . DIRECTORY_SEPARATOR;
+        $this->importDirectoryPath = $this->filesystem->getDirectoryRead(DirectoryList::MEDIA)->getAbsolutePath($this->getFlowDir()) . DIRECTORY_SEPARATOR;
         $this->errorDirectoryPath = $this->filesystemDriver->getAbsolutePath(
             $this->importDirectoryPath,
             self::DIR_ERROR_PATH
@@ -268,7 +295,6 @@ abstract class AbstractImport extends DataObject implements ImportInterface
         } catch (NoSuchEntityException $exception) {
             $this->logger->log($exception);
         }
-
         // Create all directories
         $this->filesystemDriver->createDirectory($this->importDirectoryPath);
         $this->filesystemDriver->createDirectory($this->errorDirectoryPath);
@@ -283,19 +309,26 @@ abstract class AbstractImport extends DataObject implements ImportInterface
      */
     protected function processFile($fileName)
     {
-        $this->unsetBunches();
+        $this->unsetLines();
         $this->errorAggregator->clear();
         try {
             $this->fixtureManager->iterate(
                 $fileName,
-                function ($data, $index) {
+                function ($data, $index, $hasError) {
+                    if ($hasError instanceof \Exception) {
+                        $this->addErrors($hasError->getMessage());
+                        $this->addErrors('File: ' . $hasError->getFile());
+                        $this->addErrors('Line:' . $hasError->getLine());
+                    }
                     if ($rowData = $this->validateData($data, $index)) {
-                        $this->addBunch($rowData);
+                        $this->addLine($rowData);
                     }
                 }
             );
         } catch (\Exception $exception) {
             $this->addErrors($exception->getMessage());
+            $this->addErrors('File: ' . $exception->getFile());
+            $this->addErrors('Line:' . $exception->getLine());
         }
 
         $this->afterProcess($fileName);
@@ -343,6 +376,8 @@ abstract class AbstractImport extends DataObject implements ImportInterface
             }
         } catch (\Exception $exception) {
             $this->addErrors($exception->getMessage());
+            $this->addErrors('File: ' . $exception->getFile());
+            $this->addErrors('Line:' . $exception->getLine());
             $this->afterProcess($fileName);
         }
     }
@@ -367,6 +402,26 @@ abstract class AbstractImport extends DataObject implements ImportInterface
     protected function getFirstDataLine()
     {
         return 2;
+    }
+
+    /**
+     * Set flow input dir
+     *
+     * @param string $flowDir
+     */
+    public function setFlowDir($flowDir)
+    {
+        $this->flowDir = $flowDir;
+    }
+
+    /**
+     * get flow input dir
+     *
+     * @return string
+     */
+    public function getFlowDir()
+    {
+        return $this->flowDir;
     }
 
     /**

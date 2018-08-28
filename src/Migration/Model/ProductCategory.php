@@ -67,7 +67,7 @@ class ProductCategory extends AbstractImport
      */
     public function saveData()
     {
-        $data = $this->getBunches();
+        $data = $this->getLines();
         if (count($data)) {
             $categories = [];
             foreach ($data as $row) {

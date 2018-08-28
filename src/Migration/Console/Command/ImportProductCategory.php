@@ -59,6 +59,9 @@ class ImportProductCategory extends ImportCommand
     {
         /** @var ProductCategory $product */
         $product = $this->productCategoryFactory->create();
+        if ($dirInputPath = $input->getOption(parent::INPUT_KEY_FLOW_DIR)) {
+            $product->setFlowDir($dirInputPath);
+        }
         $product->execute(self::TYPE_IMPORT, $output);
     }
 }

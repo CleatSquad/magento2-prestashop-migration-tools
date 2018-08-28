@@ -50,25 +50,37 @@ class FixtureManager implements FixtureManagerInterface
      */
     public function iterate($fileName, callable $callback)
     {
-        $fileName = $this->fixtureManager->getFixture($fileName);
-        if (file_exists($fileName)) {
-            $data = $this->csvReader->getData($fileName);
-            $header = array_shift($data);
-            if (count($data) > 0) {
-                foreach ($data as $index => $row) {
-                    $rowData = array_combine($header, $row);
-                    // Call the callback function
-                    $callback($rowData, $index);
+        try {
+            $fileName = $this->fixtureManager->getFixture($fileName);
+            if (file_exists($fileName)) {
+                $data = $this->csvReader->getData($fileName);
+                $header = array_shift($data);
+                if (count($data) > 0) {
+                    foreach ($data as $index => $row) {
+                        if(count($header) != count($row)) {
+                            if (count($row) > 0) {
+                                $callback([], [], new \Exception(
+                                    __('Line non conforme avec le header in line %1', ($index + 1))
+                                ));
+                            }
+                            continue;
+                        }
+                        $rowData = array_combine($header, $row);
+                        // Call the callback function
+                        $callback($rowData, $index, false);
+                    }
+                } else {
+                    throw new FileIsEmptyException(
+                        __('Failed to read "%1" because file is empty.', $fileName)
+                    );
                 }
             } else {
-                throw new FileIsEmptyException(
-                    __('Failed to read "%1" because file is empty.', $fileName)
+                throw new NotFoundException(
+                    __('Failed to read "%1" because file does not exist.', $fileName)
                 );
             }
-        } else {
-            throw new NotFoundException(
-                __('Failed to read "%1" because file does not exist.', $fileName)
-            );
+        } catch (\Exception $exception) {
+            $callback([], [], $exception);
         }
     }
 }

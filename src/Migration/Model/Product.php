@@ -28,7 +28,7 @@ class Product extends AbstractImport
                 'sku',
                 'name',
                 'description',
-                'description_short',
+                'short_description',
                 'url_key',
                 'status',
                 'weight',
@@ -83,7 +83,7 @@ class Product extends AbstractImport
      */
     protected function checkCodeOrIdAreCorrect($code)
     {
-        if (!$code || $code == "") {
+        if (!$code || $code == "" || $code == "NULL") {
             return true;
         }
         return (bool)$this->getStoreIdFromCode($code);
@@ -110,7 +110,7 @@ class Product extends AbstractImport
      */
     protected function getStoreIdFromCode($code)
     {
-        if (!$code) {
+        if (!$code || $code == "" || $code == "NULL") {
             $this->stores[$code] = 0;
         }
         if (!isset($this->stores[$code])) {
@@ -134,11 +134,14 @@ class Product extends AbstractImport
      */
     public function saveData()
     {
-        $data = $this->getBunches();
+        $data = $this->getLines();
         if (count($data)) {
             $objectManager = ObjectManager::getInstance();
             $productFactory = $objectManager->get(ProductFactory::class);
             foreach ($data as $row) {
+                $this->prepareData($row);
+                $row['store'] = $this->getStoreIdFromCode($row['store']);
+                $this->emulation->startEnvironmentEmulation($row['store']);
                 $product = $productFactory->create();
                 if (isset($row['product_id'])) {
                     $product = $product->load($row['product_id']);
@@ -151,7 +154,6 @@ class Product extends AbstractImport
                     $row['manage_stock'] = 1;
                 }
                 $row['url_key'] = sprintf('%s-%s', $row['product_id'], $row['url_key']);
-                $row['store'] = $this->getStoreIdFromCode($row['store']);
                 $groupId = $this->storeManager->getStore($row['store'])->getStoreGroupId();
                 $websiteId = $this->storeManager->getGroup($groupId)->getWebsiteId();
                 $product->setData($row);
@@ -159,6 +161,7 @@ class Product extends AbstractImport
                 $product->setWebsiteIds([$websiteId]);
                 $product->setStockData($row);
                 $product->save();
+                $this->emulation->stopEnvironmentEmulation();
             }
         }
     }

@@ -59,6 +59,9 @@ class ImportCategoriesCommand extends ImportCommand
     {
         /** @var Categories $categories */
         $categories = $this->categoriesFactory->create();
+        if ($dirInputPath = $input->getOption(self::INPUT_KEY_FLOW_DIR)) {
+            $categories->setFlowDir($dirInputPath);
+        }
         $categories->execute(self::TYPE_IMPORT, $output);
     }
 }

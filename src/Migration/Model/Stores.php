@@ -45,7 +45,7 @@ class Stores extends AbstractImport
      */
     public function saveData()
     {
-        $data = $this->getBunches();
+        $data = $this->getLines();
         if (count($data)) {
             $objectManager = ObjectManager::getInstance();
             $storeFactory = $objectManager->get(StoreFactory::class);

@@ -51,7 +51,7 @@ class CustomerAddress extends AbstractImport
      */
     public function saveData()
     {
-        $data = $this->getBunches();
+        $data = $this->getLines();
         if (count($data)) {
             $objectManager = ObjectManager::getInstance();
             $addressFactory = $objectManager->get(AddressFactory::class);

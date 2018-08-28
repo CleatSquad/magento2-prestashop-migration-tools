@@ -59,6 +59,9 @@ class ImportStoresCommand extends ImportCommand
     {
         /** @var Stores $stores */
         $stores = $this->storesFactory->create();
+        if ($dirInputPath = $input->getOption(parent::INPUT_KEY_FLOW_DIR)) {
+            $stores->setFlowDir($dirInputPath);
+        }
         $stores->execute(self::TYPE_IMPORT, $output);
     }
 }

@@ -107,7 +107,7 @@ class Order extends AbstractImport
      */
     public function saveData()
     {
-        $data = $this->getBunches();
+        $data = $this->getLines();
         if (count($data)) {
             $objectManager = ObjectManager::getInstance();
             $quoteFactory = $objectManager->get(QuoteFactory::class);

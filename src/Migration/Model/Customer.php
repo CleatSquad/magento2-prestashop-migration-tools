@@ -108,7 +108,7 @@ class Customer extends AbstractImport
      */
     public function saveData()
     {
-        $data = $this->getBunches();
+        $data = $this->getLines();
         if (count($data)) {
             $objectManager = ObjectManager::getInstance();
             $customerFactory = $objectManager->get(CustomerFactory::class);
