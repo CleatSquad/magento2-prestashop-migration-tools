@@ -2,9 +2,7 @@
 
 namespace Mimlab\PrestashopMigrationTool\Console\Command;
 
-use Magento\Framework\App\State;
 use Magento\Framework\ObjectManagerInterface;
-use Magento\Store\Model\App\Emulation;
 use Mimlab\PrestashopMigrationTool\Model\ProductCategory;
 use Mimlab\PrestashopMigrationTool\Model\ProductCategoryFactory;
 use Symfony\Component\Console\Input\InputInterface;
@@ -32,19 +30,15 @@ class ImportProductCategory extends ImportCommand
      *
      * @param ProductCategoryFactory $productCategoryFactory
      * @param ObjectManagerInterface $objectManager
-     * @param Emulation $emulation
-     * @param State $state
      * @param null $name
      */
     public function __construct(
         ProductCategoryFactory $productCategoryFactory,
         ObjectManagerInterface $objectManager,
-        Emulation $emulation,
-        State $state,
         $name = null
     ) {
         $this->productCategoryFactory = $productCategoryFactory;
-        parent::__construct($objectManager, $emulation, $state, $name);
+        parent::__construct($objectManager, $name);
     }
 
     /**

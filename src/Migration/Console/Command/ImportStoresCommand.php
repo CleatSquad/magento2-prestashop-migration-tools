@@ -2,9 +2,7 @@
 
 namespace Mimlab\PrestashopMigrationTool\Console\Command;
 
-use Magento\Framework\App\State;
 use Magento\Framework\ObjectManagerInterface;
-use Magento\Store\Model\App\Emulation;
 use Mimlab\PrestashopMigrationTool\Model\Stores;
 use Mimlab\PrestashopMigrationTool\Model\StoresFactory;
 use Symfony\Component\Console\Input\InputInterface;
@@ -32,19 +30,15 @@ class ImportStoresCommand extends ImportCommand
      *
      * @param StoresFactory $storesFactory
      * @param ObjectManagerInterface $objectManager
-     * @param Emulation $emulation
-     * @param State $state
      * @param null $name
      */
     public function __construct(
         StoresFactory $storesFactory,
         ObjectManagerInterface $objectManager,
-        Emulation $emulation,
-        State $state,
         $name = null
     ) {
         $this->storesFactory = $storesFactory;
-        parent::__construct($objectManager, $emulation, $state, $name);
+        parent::__construct($objectManager, $name);
     }
 
     /**

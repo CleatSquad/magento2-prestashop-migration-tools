@@ -2,9 +2,7 @@
 
 namespace Mimlab\PrestashopMigrationTool\Console\Command;
 
-use Magento\Framework\App\State;
 use Magento\Framework\ObjectManagerInterface;
-use Magento\Store\Model\App\Emulation;
 use Mimlab\PrestashopMigrationTool\Model\Customer;
 use Mimlab\PrestashopMigrationTool\Model\CustomerFactory;
 use Symfony\Component\Console\Input\InputInterface;
@@ -32,19 +30,15 @@ class ImportCustomerCommand extends ImportCommand
      *
      * @param CustomerFactory $customerFactory
      * @param ObjectManagerInterface $objectManager
-     * @param Emulation $emulation
-     * @param State $state
      * @param null $name
      */
     public function __construct(
         CustomerFactory $customerFactory,
         ObjectManagerInterface $objectManager,
-        Emulation $emulation,
-        State $state,
         $name = null
     ) {
         $this->customerFactory = $customerFactory;
-        parent::__construct($objectManager, $emulation, $state, $name);
+        parent::__construct($objectManager, $name);
     }
 
     /**

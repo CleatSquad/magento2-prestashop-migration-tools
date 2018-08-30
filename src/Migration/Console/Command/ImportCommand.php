@@ -56,19 +56,13 @@ class ImportCommand extends Command
      * ImportCommand constructor.
      *
      * @param ObjectManagerInterface $objectManager
-     * @param Emulation $emulation
-     * @param State $state
      * @param type $name
      */
     public function __construct(
         ObjectManagerInterface $objectManager,
-        Emulation $emulation,
-        State $state,
         $name = null
     ) {
         $this->objectManager = $objectManager;
-        $this->emulation = $emulation;
-        $this->state = $state;
         parent::__construct($name);
     }
 
@@ -102,7 +96,7 @@ class ImportCommand extends Command
                     )
                 ]
             );
-
+ 
         parent::configure();
     }
 
@@ -118,7 +112,8 @@ class ImportCommand extends Command
     {
         $importCommand = null;
         $typeArgument = $input->getArgument(self::INPUT_KEY_TYPE);
-
+        $this->emulation = $this->objectManager->create(Emulation::class);
+        $this->state = $this->objectManager->create(State::class);
         /** @see Memory temporary patch **/
         if (function_exists('ini_set')) {
             @ini_set('memory_limit', '512M');
@@ -160,18 +155,9 @@ class ImportCommand extends Command
                 default:
                     throw new InvalidArgumentException("`{$typeArgument}` type does not exists.");
             }
-            $area = Area::AREA_ADMINHTML;
-            $this->state->emulateAreaCode(
-                $area,
-                function($importCommand, $input, $output, $area) {
-                    $this->emulation->startEnvironmentEmulation(0, $area);
-                    $this->beforeExecute($input, $output);
-                    $importCommand->execute($input, $output);
-                    $this->afterExecute($input, $output);
-                    $this->emulation->stopEnvironmentEmulation();
-                },
-                [$importCommand, $input, $output, $area, $typeArgument]
-            );
+            $this->beforeExecute($input, $output);
+            $importCommand->execute($input, $output);
+            $this->afterExecute($input, $output);
         } catch (DirectoryIsEmptyException $exception) {
             $output->writeln($exception->getMessage());
         } catch (\Exception $exception) {
