@@ -7,7 +7,7 @@
 You can get library through [composer](https://getcomposer.org/)
 
 ```
-composer require mimou78/magento2-prestashop-migration-tools
+composer require cleatsquad/magento2-prestashop-migration-tools
 ```
 
 ```
