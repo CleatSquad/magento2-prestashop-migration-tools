@@ -16,7 +16,7 @@
         "php": ">=5.4.0",
         "symfony/console": "~2.3, !=2.7.0",
         "monolog/monolog": "^1.17",
-        "symfony/options-resolver": "^3.2"
+        "symfony/options-resolver": "^8.0"
     },
     "require-dev": {
         "magento/framework": "~101.0.0"
